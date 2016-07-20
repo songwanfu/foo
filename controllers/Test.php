@@ -23,6 +23,8 @@ class Test extends Controller
         }, 'haha');
 
         $event::trigger('test');
+
+        $this->render('test\index', ['name' => 'tom', 'age' => 0, 'friends' => ['jack', 'rose']], ['cacheTime' => 10]);
     }
 
 

@@ -9,17 +9,25 @@ use foo\base\Container;
 */
 class Application extends Object
 {
+    private $_controller;
+    private $_function;
+
     public function __construct($controller, $function)
     {
-        $di = new Container();
-        $di[$controller] = $controller;
-        $obj = $di[$controller];
-        if (method_exists($obj, $function)) {
-            call_user_func([$obj, $function]);
+        $this->_controller = $controller;
+        $this->_function = $function;
+    }
+
+    public function run()
+    {
+        $di = Container::getInstance();
+        $di[$this->_controller] = $this->_controller;
+        $obj = $di[$this->_controller];
+        if (method_exists($obj, $this->_function)) {
+            call_user_func([$obj, $this->_function]);
         } else {
             exit('方法不存在!');
         }
-        
     }
 
 }

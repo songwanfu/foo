@@ -1,16 +1,17 @@
 <?php
 
-spl_autoload_register(function ($class) {
-    $classMap = require(__DIR__ . '/classes.php');
-    $dirList = ['controllers', 'models'];
+$classMap = require(__DIR__ . '/classes.php');
+$dirList = ['controllers', 'models'];
 
+spl_autoload_register(function ($class) use ($classMap, $dirList){
     if (!empty($classMap[$class])) {
         require($classMap[$class]);
     } else {
         list($alias, $dir, $class) = explode('\\', $class);
         if ($alias === 'app' && in_array($dir, $dirList)) {
-            if (file_exists('../' . $dir . '/'. $class . '.php')) {
-                require('../' . $dir . '/'. $class . '.php');
+            $controllerFile = '../' . $dir . '/'. $class . '.php';
+            if (file_exists($controllerFile)) {
+                require($controllerFile);
             } else {
                 exit('控制器不存在!');
             }
