@@ -37,7 +37,7 @@ class Template extends Object
         if (is_array($values)) {
             $this->_valueMap = $values;
         } else {
-            exit('分配的值必须为数组!');
+            throw new \Exception('控制器分配给视图的值必须为数组!');
         }
         return $this;
     }
@@ -51,7 +51,7 @@ class Template extends Object
     {
         $this->_file = $file;
         if (!is_file($this->path())) {
-            exit('模板文件不存在!');
+            throw new \Exception('模板文件'. $file . '不存在!');
         }
        
         $compileFile = $this->_config['compileDir'] . md5($file) . $this->_config['suffixCompile'];

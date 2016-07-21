@@ -22,7 +22,12 @@ class Router
         if (strpos($redirectUrl, 'web/') === false) {
             list($controller, $function) = explode('/', substr($redirectUrl, strpos($redirectUrl, '/')));
         } else {
-            list($controller, $function) = explode('/', substr($redirectUrl, strpos($redirectUrl, 'web/') + 4));
+            $contro_func = substr($redirectUrl, strpos($redirectUrl, 'web/') + 4);
+            if (strpos($contro_func, '/') !== false) {
+                list($controller, $function) = explode('/', substr($redirectUrl, strpos($redirectUrl, 'web/') + 4));
+            } else {
+                throw new \Exception($contro_func . ': 不正确的路由!');
+            }
         }
         
         return ['app\\controllers\\' . $controller, $function];

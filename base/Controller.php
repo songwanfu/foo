@@ -44,10 +44,14 @@ class Controller extends Object
     protected function render($file, $values, $templateConfig = [])
     {
         $di = Container::getInstance();
-        $di->compiler = 'foo\base\Compiler';
-        $compiler = $di->compiler;
-        $template = new \foo\base\Template($compiler, $templateConfig);
-        $template->assign($values)->show($file);
+
+        $di->template = function () use ($di, $templateConfig) {
+            $di->compiler = 'foo\base\Compiler';
+            $compiler = $di->compiler;
+            return new \foo\base\Template($compiler, $templateConfig);
+        };
+
+        $di->template->assign($values)->show($file);
     }
 
 }

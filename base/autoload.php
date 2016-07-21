@@ -13,10 +13,10 @@ spl_autoload_register(function ($class) use ($classMap, $dirList){
             if (file_exists($controllerFile)) {
                 require($controllerFile);
             } else {
-                exit('控制器不存在!');
+                throw new \Exception('控制器不存在!');
             }
         } else {
-            exit('加载类文件失败!');
+            throw new \Exception('加载' . $class . '类文件失败!');
         }
     }
 });

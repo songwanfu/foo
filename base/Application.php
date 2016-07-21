@@ -26,7 +26,7 @@ class Application extends Object
         if (method_exists($obj, $this->_function)) {
             call_user_func([$obj, $this->_function]);
         } else {
-            exit('方法不存在!');
+            throw new \Exception('方法' . $this->_function . '不存在!');
         }
     }
 

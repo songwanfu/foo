@@ -6,7 +6,7 @@ class Container extends Object
 {
     private static $_instance;
     private $s = [];
-    public static $instance = [];
+    public static $instances = [];
 
     public static function getInstance()
     {
@@ -38,15 +38,15 @@ class Container extends Object
      * @throws Exception
      */
     public function build($className)
-    {
+    {     
         // 如果是闭包函数（closures）
-        if ($className instanceof Closure) {
+        if ($className instanceof \Closure) {
             // 执行闭包函数
             return $className($this);
         }
 
-        if (!empty(self::$instance[$className])) {
-            return self::$instance[$className];
+        if (isset(self::$instances[$className])) {
+            return self::$instances[$className];
         }
 
         /** @var ReflectionClass $reflector */
@@ -54,7 +54,7 @@ class Container extends Object
 
         // 检查类是否可实例化, 排除抽象类abstract和对象接口interface
         if (!$reflector->isInstantiable()) {
-            throw new \Exception("Can't instantiate this.");
+            throw new \Exception($reflector . ': 不能实例化该类!');
         }
 
         /** @var ReflectionMethod $constructor 获取类的构造函数 */
@@ -73,7 +73,7 @@ class Container extends Object
 
         // 创建一个类的新实例，给出的参数将传递到类的构造函数。
         $obj = $reflector->newInstanceArgs($dependencies);
-        self::$instance[$className] = $obj;
+        self::$instances[$className] = $obj;
 
         return $obj;
     }
